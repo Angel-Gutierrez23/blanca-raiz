@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blanca Raiz | Diagnostico Edafologico</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --verde-primario: #1B4332;
+            --verde-secundario: #2D6A4F;
+            --verde-claro: #40916C;
+            --verde-suave: #D8F3DC;
+            --tierra: #8B5E3C;
+            --tierra-claro: #C9956A;
+            --crema: #F8F4EE;
+            --crema-2: #EDE8DF;
+            --blanco: #FFFFFF;
+            --gris-texto: #3A3A3A;
+            --gris-suave: #F0F2F0;
+            --gris-borde: #D0D5CF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Nimbus Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--crema);
+            color: var(--gris-texto);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .header-institucional {
+            background-color: var(--verde-primario);
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 68px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.25);
+        }
+
+        .header-marca {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .header-nombre {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--blanco);
+            letter-spacing: .5px;
+        }
+
+        .header-subtitulo {
+            font-size: 11px;
+            font-weight: 300;
+            color: rgba(255,255,255,.65);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .header-meta {
+            text-align: right;
+            font-size: 11px;
+            color: rgba(255,255,255,.5);
+            line-height: 1.6;
+            letter-spacing: .5px;
+        }
+
+        .banda-proyecto {
+            background-color: var(--verde-secundario);
+            padding: 7px 32px;
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .banda-proyecto span {
+            font-size: 11px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.55);
+        }
+
+        .banda-proyecto b {
+            color: var(--tierra-claro);
+            font-weight: 600;
+        }
+
+        .contenedor-principal {
+            max-width: 1080px;
+            margin: 32px auto;
+            padding: 0 20px 48px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--gris-borde);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #888;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s ease;
+            font-family: 'Nimbus Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab-btn:hover { color: var(--verde-primario); }
+
+        .tab-btn.activo {
+            color: var(--verde-primario);
+            border-bottom-color: var(--verde-primario);
+        }
+
+        .tab-contenido {
+            display: none;
+            animation: aparecer 0.4s ease;
+        }
+
+        .tab-contenido.activo { display: block; }
+
+        .layout-dos-columnas {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 780px) {
+            .layout-dos-columnas { grid-template-columns: 1fr; }
+        }
+
+        .tarjeta {
+            background: var(--blanco);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(27,67,50,.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .tarjeta-cabecera {
+            background-color: var(--verde-primario);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tarjeta-cabecera h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--blanco);
+            letter-spacing: .3px;
+            text-transform: uppercase;
+        }
+
+        .tarjeta-cabecera .etiqueta {
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: var(--tierra-claro);
+            color: var(--verde-primario);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .tarjeta-cuerpo { padding: 24px; }
+
+        .grafica-contenedor {
+            width: 100%;
+            height: 350px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: var(--crema);
+            border-radius: 8px;
+            border: 1px solid var(--gris-borde);
+        }
+
+        .estadisticos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .estadistico-item {
+            background: var(--gris-suave);
+            border: 1px solid var(--gris-borde);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .estadistico-item .est-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .estadistico-item .est-valor {
+            font-family: 'Nimbus Sans', sans-serif;
+            font-size: 16px;
+            color: var(--verde-primario);
+            font-weight: 700;
+        }
+
+        .r2-barra-fondo {
+            height: 6px;
+            background: var(--gris-borde);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .r2-barra-relleno {
+            height: 100%;
+            background: var(--verde-claro);
+            border-radius: 3px;
+            transition: width .8s ease;
+        }
+
+        .seccion-texto h3 {
+            font-size: 14px;
+            color: var(--verde-primario);
+            margin: 20px 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .seccion-texto h3:first-child { margin-top: 0; }
+        .seccion-texto p {
+            font-size: 13.5px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .formula-caja {
+            background: var(--gris-suave);
+            border: 1px solid var(--gris-borde);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-family: 'Nimbus Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--verde-primario);
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        .codigo-bloque {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12.5px;
+            overflow-x: auto;
+            line-height: 1.45;
+            margin-bottom: 16px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .formulario-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 20px;
+        }
+
+        @media (max-width: 500px) {
+            .formulario-grid { grid-template-columns: 1fr; }
+        }
+
+        .campo { display: flex; flex-direction: column; gap: 4px; }
+        .campo.ancho-completo { grid-column: 1 / -1; }
+
+        .campo label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--verde-primario);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .campo .rango-referencia {
+            font-size: 11px;
+            color: var(--verde-claro);
+            font-family: 'Nimbus Sans', sans-serif;
+        }
+
+        .campo input {
+            padding: 10px 12px;
+            border: 1.5px solid var(--gris-borde);
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: 'Nimbus Sans', sans-serif;
+            background: var(--crema);
+            color: var(--gris-texto);
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .campo input:focus {
+            outline: none;
+            border-color: var(--verde-claro);
+            box-shadow: 0 0 0 3px rgba(64,145,108,.15);
+        }
+
+        .campo input::placeholder { color: #aaa; font-size: 13px; }
+
+        .btn-diagnosticar {
+            grid-column: 1 / -1;
+            padding: 14px;
+            background-color: var(--verde-primario);
+            color: var(--blanco);
+            border: none;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: .5px;
+            cursor: pointer;
+            transition: background-color .2s, transform .1s;
+            text-transform: uppercase;
+        }
+
+        .btn-diagnosticar:hover  { background-color: var(--verde-secundario); }
+        .btn-diagnosticar:active { transform: scale(.98); }
+
+        .resultado-bloque { animation: aparecer .4s ease; }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .semaforo-banner {
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            border-left: 8px solid;
+        }
+
+        .VERDE    { background: #E8F5E9; border-color: #2E7D32; }
+        .ROJO     { background: #FFEBEE; border-color: #C62828; }
+        .AMARILLO { background: #FFF8E1; border-color: #F9A825; }
+        .NARANJA  { background: #FFF3E0; border-color: #EF6C00; }
+        .AZUL     { background: #E1F5FE; border-color: #0277BD; }
+        .GRIS     { background: #F5F5F5; border-color: #9E9E9E; }
+
+        .semaforo-circulo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: pulso 2.5s infinite;
+        }
+
+        @keyframes pulso {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,.2); }
+            50%      { box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+        }
+
+        .VERDE    .semaforo-circulo { background: #2E7D32; }
+        .ROJO     .semaforo-circulo { background: #C62828; }
+        .AMARILLO .semaforo-circulo { background: #F9A825; }
+        .NARANJA  .semaforo-circulo { background: #EF6C00; }
+        .AZUL     .semaforo-circulo { background: #0277BD; }
+        .GRIS     .semaforo-circulo { background: #9E9E9E; }
+
+        .semaforo-texto h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gris-texto);
+        }
+
+        .semaforo-fecha {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+            font-family: 'Nimbus Sans', sans-serif;
+        }
+
+        .resultado-dos-columnas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 580px) {
+            .resultado-dos-columnas { grid-template-columns: 1fr; }
+        }
+
+        .lista-tarjeta { margin: 0; }
+        .lista-tarjeta h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .lista-tarjeta ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .lista-tarjeta ul li {
+            font-size: 13px;
+            color: #555;
+            padding: 10px 12px;
+            background: var(--crema);
+            border-radius: 6px;
+            line-height: 1.45;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .lista-tarjeta ul li::before {
+            content: '|';
+            color: var(--tierra-claro);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .acciones-btn { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+        .btn-secundario {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            letter-spacing: .5px;
+            cursor: pointer;
+            border: 1.5px solid var(--verde-primario);
+            background: transparent;
+            color: var(--verde-primario);
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all .18s;
+        }
+
+        .btn-secundario:hover { background: var(--verde-primario); color: var(--blanco); }
+
+        .rangos-lista { list-style: none; }
+        .rango-fila {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--gris-suave);
+            gap: 8px;
+        }
+        .rango-fila:last-child { border-bottom: none; }
+
+        .rango-nombre { font-size: 12px; font-weight: 600; color: var(--verde-primario); }
+        .rango-valor {
+            font-family: 'Nimbus Sans', sans-serif;
+            font-size: 11px;
+            color: var(--verde-claro);
+            white-space: nowrap;
+        }
+
+        .historial-lista { list-style: none; }
+        .historial-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gris-suave);
+            font-size: 12px;
+        }
+        .historial-item:last-child { border-bottom: none; }
+
+        .hist-punto { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .hist-VERDE    { background: #2E7D32; }
+        .hist-ROJO     { background: #C62828; }
+        .hist-AMARILLO { background: #F9A825; }
+        .NARANJA  { background: #EF6C00; }
+        .AZUL     { background: #0277BD; }
+        .GRIS     { background: #9E9E9E; }
+
+        .hist-fecha { font-family: 'Nimbus Sans', sans-serif; font-size: 10px; color: #aaa; }
+
+        .texto-vacio { font-size: 12px; color: #aaa; text-align: center; padding: 16px 0; font-style: italic; }
+        .separador { border: none; border-top: 1px solid var(--gris-borde); margin: 20px 0; }
+        .aviso-opcional { text-align: center; font-size: 12px; color: #888; margin-bottom: 20px; }
+
+        .footer {
+            background-color: var(--verde-primario);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .footer-nombre { font-size: 13px; color: rgba(255,255,255,.7); font-weight: 600; }
+        .footer-meta { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing: .5px; text-transform: uppercase; }
+
+        @media print {
+            .header-institucional, .banda-proyecto, .tabs-nav, .sidebar-col, .footer { display: none !important; }
+            body { background: white; }
+            .layout-dos-columnas { grid-template-columns: 1fr; }
+            .tab-contenido { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header-institucional">
+    <div class="header-marca">
+        <span class="header-nombre">Blanca Raiz</span>
+        <span class="header-subtitulo">Sistema de Diagnostico Edafologico para Cacao</span>
+    </div>
+    <div class="header-meta">
+        Universidad Nacional Rosario Castellanos<br>
+        Ciencia de Datos para Negocios | 2026-1
+    </div>
+</header>
+
+<div class="banda-proyecto">
+    <span>Cultivo: <b>Cacao</b></span>
+    <span>Region: <b>Soconusco, Chiapas</b></span>
+    <span>Equipo: <b>2 Grupo 201</b></span>
+    <span>Variables: <b>8 parametros edafologicos</b></span>
+</div>
+
+<div class="contenedor-principal">
+
+    <div class="tabs-nav">
+        <button class="tab-btn activo" onclick="abrirPestana(event, 'tab-diagnostico')">1. Diagnostico Operativo</button>
+        <button class="tab-btn" onclick="abrirPestana(event, 'tab-matematicas')">2. Modulo Analitico (Regresion y Graficas)</button>
+    </div>
+
+    <div id="tab-diagnostico" class="tab-contenido activo">
+        <div class="layout-dos-columnas">
+            <div class="columna-principal">
+                
+                <div class="tarjeta formulario-seccion">
+                    <div class="tarjeta-cabecera">
+                        <h2>Ingreso de Parametros del Suelo</h2>
+                        <span class="etiqueta">Hasta 8 variables</span>
+                    </div>
+                    <div class="tarjeta-cuerpo">
+                        <p class="aviso-opcional">Los campos vacios seran omitidos del analisis. Ingrese solo los datos disponibles.</p>
+                        <form method="POST">
+                            <div class="formulario-grid">
+                                <div class="campo">
+                                    <label>pH del suelo</label>
+                                    <span class="rango-referencia">Optimo: 6.0 - 7.0</span>
+                                    <input type="text" name="ph" placeholder="Ej: 5.8">
+                                </div>
+                                <div class="campo">
+                                    <label>Humedad (%)</label>
+                                    <span class="rango-referencia">Optimo: 70 - 80 %</span>
+                                    <input type="text" name="humedad" placeholder="Ej: 75">
+                                </div>
+                                <div class="campo">
+                                    <label>Nitrogeno N (ppm)</label>
+                                    <span class="rango-referencia">Optimo: 20 - 60 ppm</span>
+                                    <input type="text" name="n" placeholder="Ej: 30">
+                                </div>
+                                <div class="campo">
+                                    <label>Fosforo P (ppm)</label>
+                                    <span class="rango-referencia">Optimo: 15 - 40 ppm</span>
+                                    <input type="text" name="p" placeholder="Ej: 20">
+                                </div>
+                                <div class="campo">
+                                    <label>Potasio K (ppm)</label>
+                                    <span class="rango-referencia">Optimo: 100 - 250 ppm</span>
+                                    <input type="text" name="k" placeholder="Ej: 150">
+                                </div>
+                                <div class="campo">
+                                    <label>Conductividad Electrica (dS/m)</label>
+                                    <span class="rango-referencia">Limite: menor a 2.0 dS/m</span>
+                                    <input type="text" name="ce" placeholder="Ej: 1.2">
+                                </div>
+                                <div class="campo">
+                                    <label>Temperatura del suelo (C)</label>
+                                    <span class="rango-referencia">Optimo: 23 - 28 C</span>
+                                    <input type="text" name="temp" placeholder="Ej: 26">
+                                </div>
+                                <div class="campo">
+                                    <label>Materia Organica (%)</label>
+                                    <span class="rango-referencia">Optimo: 3.0 - 5.0 %</span>
+                                    <input type="text" name="mo" placeholder="Ej: 3.8">
+                                </div>
+                                <button type="submit" class="btn-diagnosticar">Ejecutar Analisis Edafologico</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {% if resultado %}
+                <div class="resultado-bloque">
+                    <div class="tarjeta">
+                        <div class="tarjeta-cabecera">
+                            <h2>Reporte de Salud del Suelo</h2>
+                            <span class="etiqueta">{{ resultado.fecha }}</span>
+                        </div>
+                        <div class="tarjeta-cuerpo">
+                            <div class="semaforo-banner {{ resultado.semaforo }}">
+                                <div class="semaforo-circulo"></div>
+                                <div class="semaforo-texto">
+                                    <h3>Estado general: {{ resultado.semaforo }}</h3>
+                                    <div class="semaforo-fecha">Diagnostico edafologico - Soconusco, Chiapas</div>
+                                </div>
+                            </div>
+                            <hr class="separador">
+                            <div class="resultado-dos-columnas">
+                                <div class="lista-tarjeta">
+                                    <h4>Hallazgos detectados</h4>
+                                    <ul>
+                                        {% for alerta in resultado.alertas %}
+                                        <li>{{ alerta }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="lista-tarjeta">
+                                    <h4>Plan de accion recomendado</h4>
+                                    <ul>
+                                        {% for accion in resultado.acciones %}
+                                        <li>{{ accion }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="acciones-btn">
+                                <button class="btn-secundario" onclick="window.print()">Imprimir ficha</button>
+                                <button class="btn-secundario" onclick="guardarHistorial()">Guardar en historial</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="sidebar-col">
+                <div class="tarjeta">
+                    <div class="tarjeta-cabecera">
+                        <h2>Rangos Optimos</h2>
+                        <span class="etiqueta">Cacao</span>
+                    </div>
+                    <div class="tarjeta-cuerpo" style="padding: 16px 20px;">
+                        <ul class="rangos-lista">
+                            {% for clave, r in rangos.items() %}
+                            <li class="rango-fila">
+                                <span class="rango-nombre">{{ r.label }}</span>
+                                <span class="rango-valor">{{ r.min }} - {{ r.max }} {{ r.unidad }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tarjeta">
+                    <div class="tarjeta-cabecera">
+                        <h2>Historial de Sesion</h2>
+                    </div>
+                    <div class="tarjeta-cuerpo" style="padding: 16px 20px;">
+                        <ul class="historial-lista" id="listaHistorial">
+                            <li class="texto-vacio" id="sinRegistros">Sin diagnosticos guardados</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tarjeta">
+                    <div class="tarjeta-cabecera">
+                        <h2>Guia del Semaforo</h2>
+                    </div>
+                    <div class="tarjeta-cuerpo" style="padding: 16px 20px;">
+                        <ul class="rangos-lista">
+                            <li class="rango-fila">
+                                <span style="display:flex;align-items:center;gap:8px;">
+                                    <span class="hist-punto hist-VERDE"></span>
+                                    <span class="rango-nombre">VERDE</span>
+                                </span>
+                                <span class="rango-valor" style="font-size:11px;color:#666;">Suelo optimo</span>
+                            </li>
+                            <li class="rango-fila">
+                                <span style="display:flex;align-items:center;gap:8px;">
+                                    <span class="hist-punto hist-AMARILLO"></span>
+                                    <span class="rango-nombre">AMARILLO</span>
+                                </span>
+                                <span class="rango-valor" style="font-size:11px;color:#666;">Atencion preventiva</span>
+                            </li>
+                            <li class="rango-fila">
+                                <span style="display:flex;align-items:center;gap:8px;">
+                                    <span class="hist-punto hist-NARANJA"></span>
+                                    <span class="rango-nombre">NARANJA</span>
+                                </span>
+                                <span class="rango-valor" style="font-size:11px;color:#666;">Deficit de nutrientes</span>
+                            </li>
+                            <li class="rango-fila">
+                                <span style="display:flex;align-items:center;gap:8px;">
+                                    <span class="hist-punto hist-AZUL"></span>
+                                    <span class="rango-nombre">AZUL</span>
+                                </span>
+                                <span class="rango-valor" style="font-size:11px;color:#666;">Exceso de agua</span>
+                            </li>
+                            <li class="rango-fila">
+                                <span style="display:flex;align-items:center;gap:8px;">
+                                    <span class="hist-punto hist-ROJO"></span>
+                                    <span class="rango-nombre">ROJO</span>
+                                </span>
+                                <span class="rango-valor" style="font-size:11px;color:#666;">Intervencion urgente</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-matematicas" class="tab-contenido">
+        
+        <div class="tarjeta">
+            <div class="tarjeta-cabecera">
+                <h2>Visualizacion Analitica: Evolucion de Modelos</h2>
+                <span class="etiqueta">Chart.js</span>
+            </div>
+            <div class="tarjeta-cuerpo">
+                <p style="font-size: 13px; color: #666; margin-bottom: 16px; line-height: 1.6;">
+                    Grafico comparativo del comportamiento real de la humedad vs. el pronostico del modelo lineal (minimos cuadrados) y el avance hacia un modelo polinomial cubico ajustado.
+                </p>
+                <div class="grafica-contenedor">
+                    <canvas id="graficaHumedad"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <div class="tarjeta-cabecera">
+                <h2>Metricas de Prediccion</h2>
+                <span class="etiqueta">Periodo Actual</span>
+            </div>
+            <div class="tarjeta-cuerpo">
+                {% if prediccion %}
+                <div class="estadisticos-grid">
+                    <div class="estadistico-item">
+                        <div class="est-label">Pronostico Lineal (y)</div>
+                        <div class="est-valor">{{ prediccion.prediccion }} %</div>
+                    </div>
+                    <div class="estadistico-item" style="border-color: var(--verde-claro);">
+                        <div class="est-label" style="color: var(--verde-claro);">Pronostico Cubico (f(t))</div>
+                        <div class="est-valor" style="color: var(--verde-claro);">{{ prediccion.prediccion_c }} %</div>
+                    </div>
+                    <div class="estadistico-item">
+                        <div class="est-label">R2 - Modelo Lineal</div>
+                        <div class="est-valor">{{ prediccion.r2 }}</div>
+                        <div class="r2-barra-fondo">
+                            <div class="r2-barra-relleno" style="width: {{ (prediccion.r2 * 100)|int }}%"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="tarjeta seccion-doc">
+            <div class="tarjeta-cabecera" style="background-color: var(--verde-secundario);">
+                <h2>Documentacion: Fundamento Analitico</h2>
+                <span class="etiqueta" style="background: var(--crema); color: var(--verde-primario);">Metodologia</span>
+            </div>
+            <div class="tarjeta-cuerpo seccion-texto">
+                <h3>Modelo de Regresion Lineal</h3>
+                <p>El comportamiento base se estructura a traves de la ecuacion de la recta (y = mx + b) mediante minimos cuadrados. Al procesar los datos de la parcela se obtiene la siguiente formula de tendencia:</p>
+                <div class="formula-caja" style="color: var(--verde-primario); border-color: var(--verde-primario);">
+                    {% if prediccion %} {{ prediccion.ecuacion }} {% endif %}
+                </div>
+                
+                <h3>Evolucion: Modelo Polinomial (Grado 3)</h3>
+                <p>Para mejorar la proyeccion lineal, se desarrollo una ecuacion cubica basada en el analisis edafologico historico de la region del Soconusco. Este modelo capta con mayor exactitud las fluctuaciones curvas propias de las temporadas de sequia y lluvia:</p>
+                <div class="formula-caja" style="color: var(--verde-claro); border-color: var(--verde-claro);">
+                    f(t) = 31.02 - 0.19t + 0.006t2 - 0.00004t3
+                </div>
+                <p>Ambos modelos han sido programados de forma nativa en el backend de Python, demostrando el transito de un analisis estatico a un sistema predictivo capaz de anticipar estres hidrico o asfixia radicular en los proximos periodos de cultivo.</p>
+
+                <h3>Implementacion (Python)</h3>
+                <p>El algoritmo predictivo se desarrollo desde cero, aplicando directamente las formulas algebraicas sobre las listas de datos sin depender de librerias externas de machine learning. A continuacion, se ilustran las lineas de codigo responsables del ajuste del modelo Lineal:</p>
+                <pre class="codigo-bloque"><code># 1. Ajuste del modelo: Calculo de medias, pendiente (m) e intercepto (b)
+mean_x = sum(x) / len(x)
+mean_y = sum(y) / len(y)
+
+numerador = sum((x[i] - mean_x) * (y[i] - mean_y) for i in range(len(x)))
+denominador = sum((x[i] - mean_x) ** 2 for i in range(len(x)))
+
+slope = numerador / denominador
+intercept = mean_y - (slope * mean_x)
+
+# 2. Extraccion de metricas: Calculo del Coeficiente de Determinacion (R2)
+y_predicted = [slope * val_x + intercept for val_x in x]
+ss_res = sum([(y_actual - y_pred)**2 for y_actual, y_pred in zip(y, y_predicted)])
+ss_tot = sum([(y_actual - mean_y)**2 for y_actual in y])
+
+r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0</code></pre>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <span class="footer-nombre">Blanca Raiz - El Cacao en el Soconusco | Equipo 2</span>
+    <span class="footer-meta">Desarrollado por: Galvan Morales Mirian Jazmin - Gutierrez Ojeda Angel Gabriel</span>
+</footer>
+
+<script>
+    function abrirPestana(evt, idPestana) {
+        var i, contenido, botones;
+        contenido = document.getElementsByClassName("tab-contenido");
+        for (i = 0; i < contenido.length; i++) {
+            contenido[i].style.display = "none";
+            contenido[i].classList.remove("activo");
+        }
+        botones = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < botones.length; i++) {
+            botones[i].classList.remove("activo");
+        }
+        document.getElementById(idPestana).style.display = "block";
+        document.getElementById(idPestana).classList.add("activo");
+        evt.currentTarget.classList.add("activo");
+    }
+
+    var historial = JSON.parse(sessionStorage.getItem('br_historial') || '[]');
+
+    function mostrarHistorial() {
+        var lista = document.getElementById('listaHistorial');
+        var sinReg = document.getElementById('sinRegistros');
+        var itemsViejos = lista.querySelectorAll('.historial-item');
+
+        for (var i = 0; i < itemsViejos.length; i++) {
+            itemsViejos[i].remove();
+        }
+
+        if (historial.length === 0) {
+            sinReg.style.display = 'block';
+            return;
+        }
+
+        sinReg.style.display = 'none';
+
+        for (var j = historial.length - 1; j >= 0; j--) {
+            var h = historial[j];
+            var li = document.createElement('li');
+            li.className = 'historial-item';
+            li.innerHTML =
+                '<span class="hist-punto hist-' + h.semaforo + '"></span>' +
+                '<span>' +
+                    '<strong>' + h.semaforo + '</strong><br>' +
+                    '<span class="hist-fecha">' + h.fecha + '</span>' +
+                '</span>';
+            lista.appendChild(li);
+        }
+    }
+
+    function guardarHistorial() {
+        {% if resultado %}
+        var entrada = {
+            semaforo : "{{ resultado.semaforo }}",
+            fecha    : "{{ resultado.fecha }}"
+        };
+        historial.push(entrada);
+
+        if (historial.length > 10) {
+            historial.shift();
+        }
+
+        sessionStorage.setItem('br_historial', JSON.stringify(historial));
+        mostrarHistorial();
+        alert('Diagnostico guardado en el historial.');
+        {% else %}
+        alert('No hay diagnostico activo.');
+        {% endif %}
+    }
+
+    mostrarHistorial();
+
+    {% if prediccion %}
+    document.addEventListener("DOMContentLoaded", function() {
+        var ctx = document.getElementById('graficaHumedad').getContext('2d');
+        var labels_x = {{ prediccion.labels_chart | tojson }};
+        var data_real = {{ prediccion.real_chart | tojson }};
+        var data_lineal = {{ prediccion.lineal_chart | tojson }};
+        var data_cubica = {{ prediccion.cubica_chart | tojson }};
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels_x,
+                datasets: [
+                    {
+                        label: 'Humedad Real (%)',
+                        data: data_real,
+                        borderColor: '#8B5E3C',
+                        backgroundColor: '#8B5E3C',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        borderDash: [5, 5],
+                        fill: false,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Tendencia Lineal',
+                        data: data_lineal,
+                        borderColor: '#2D6A4F',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0
+                    },
+                    {
+                        label: 'Modelo Cubico (Optimo)',
+                        data: data_cubica,
+                        borderColor: '#40916C',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: { family: "'Nimbus Sans', sans-serif" } }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Periodo (Tiempo)' } },
+                    y: { title: { display: true, text: 'Nivel de Humedad (%)' } }
+                }
+            }
+        });
+    });
+    {% endif %}
+</script>
+
+</body>
+</html>
