@@ -1,42 +1,45 @@
 from flask import Flask, render_template, request
 from datetime import datetime
+import pandas as pd
 
 app = Flask(__name__)
 
 # Modulo predictivo
 def calcular_regresion_historica():
-    y = [
-        36.08, 39.02, 35.28, 31.69, 25.55, 45.55, 26.73, 30.25,
-        40.58, 31.18, 27.71, 45.59, 36.04, 36.61, 41.03, 22.71,
-        43.67, 33.27, 42.75, 47.52, 37.63, 42.97, 34.45, 25.72,
-        27.38, 36.18, 47.37, 24.24
-    ]
+    try:
+        ruta_csv = 'dataset_suelo_NASA_soconusco_2015_2024.xlsx - Dataset Completo.csv'
+        df = pd.read_csv(ruta_csv)
+        
+        df['Fecha'] = pd.to_datetime(df['Fecha'])
+        df['Anio'] = df['Fecha'].dt.year
+        
+        datos_anuales = df.groupby('Anio')['Humedad'].mean().reset_index()
+        y = datos_anuales['Humedad'].tolist()
+        
+    except Exception as e:
+        print(f"Alerta: No se pudo leer el CSV. Usando datos de respaldo. Error: {e}")
+        y = [
+            36.08, 39.02, 35.28, 31.69, 25.55, 45.55, 26.73, 30.25,
+            40.58, 31.18, 27.71, 45.59, 36.04, 36.61, 41.03, 22.71,
+            43.67, 33.27, 42.75, 47.52, 37.63, 42.97, 34.45, 25.72,
+            27.38, 36.18, 47.37, 24.24
+        ]
 
     x = list(range(1, len(y) + 1))
-    mean_x = sum(x) / len(x)
-    mean_y = sum(y) / len(y)
+    mean_x = sum(x) / len(x) if len(x) > 0 else 0
+    mean_y = sum(y) / len(y) if len(y) > 0 else 0
 
-    numerador = 0
-    denominador = 0
-    for i in range(len(x)):
-        numerador += (x[i] - mean_x) * (y[i] - mean_y)
-        denominador += (x[i] - mean_x) ** 2
+    numerador = sum((x[i] - mean_x) * (y[i] - mean_y) for i in range(len(x)))
+    denominador = sum((x[i] - mean_x) ** 2 for i in range(len(x)))
 
-    if denominador == 0:
-        return None
-
-    pendiente = numerador / denominador
+    pendiente = numerador / denominador if denominador != 0 else 0
     intercepto = mean_y - (pendiente * mean_x)
 
     siguiente_x = len(x) + 1
     prediccion_lineal = pendiente * siguiente_x + intercepto
 
-    ss_res = 0
-    ss_tot = 0
-    for i in range(len(x)):
-        y_pred = pendiente * x[i] + intercepto
-        ss_res += (y[i] - y_pred) ** 2
-        ss_tot += (y[i] - mean_y) ** 2
+    ss_res = sum((y[i] - (pendiente * x[i] + intercepto)) ** 2 for i in range(len(x)))
+    ss_tot = sum((y[i] - mean_y) ** 2 for i in range(len(x)))
 
     r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0
 
@@ -53,7 +56,7 @@ def calcular_regresion_historica():
     y_cubica_chart = [round(c0 + (c1*val) + (c2*(val**2)) + (c3*(val**3)), 2) for val in x_chart]
 
     return {
-        "ecuacion": f"y = {round(pendiente, 2)}x + {round(intercepto, 2)}",
+        "ecuacion": f"y = {round(pendiente, 4)}x + {round(intercepto, 4)}",
         "prediccion": round(prediccion_lineal, 2),
         "prediccion_c": round(prediccion_cubica, 2),
         "r2": round(r2, 4),
