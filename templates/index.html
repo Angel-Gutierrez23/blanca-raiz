@@ -16,7 +16,8 @@
             --crema: #F8F4EE;
             --crema-2: #EDE8DF;
             --blanco: #FFFFFF;
-            --gris-texto: #3A3A3A;
+            /* Texto oscurecido para mayor contraste */
+            --gris-texto: #1A1A1A;
             --gris-suave: #F0F2F0;
             --gris-borde: #D0D5CF;
         }
@@ -57,8 +58,8 @@
 
         .header-subtitulo {
             font-size: 11px;
-            font-weight: 300;
-            color: rgba(255,255,255,.65);
+            font-weight: 600;
+            color: rgba(255,255,255,.95);
             letter-spacing: 1.5px;
             text-transform: uppercase;
         }
@@ -66,7 +67,8 @@
         .header-meta {
             text-align: right;
             font-size: 11px;
-            color: rgba(255,255,255,.5);
+            font-weight: 500;
+            color: rgba(255,255,255,.9);
             line-height: 1.6;
             letter-spacing: .5px;
         }
@@ -84,12 +86,13 @@
             font-size: 11px;
             letter-spacing: 1.2px;
             text-transform: uppercase;
-            color: rgba(255,255,255,.55);
+            font-weight: 600;
+            color: rgba(255,255,255,.95);
         }
 
         .banda-proyecto b {
-            color: var(--tierra-claro);
-            font-weight: 600;
+            color: #E8CBAF;
+            font-weight: 800;
         }
 
         .contenedor-principal {
@@ -110,8 +113,8 @@
             border: none;
             padding: 12px 24px;
             font-size: 14px;
-            font-weight: 700;
-            color: #888;
+            font-weight: 800;
+            color: #444444;
             cursor: pointer;
             border-bottom: 3px solid transparent;
             margin-bottom: -2px;
@@ -164,7 +167,7 @@
 
         .tarjeta-cabecera h2 {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--blanco);
             letter-spacing: .3px;
             text-transform: uppercase;
@@ -175,10 +178,10 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             background: var(--tierra-claro);
-            color: var(--verde-primario);
+            color: #111111;
             padding: 3px 8px;
             border-radius: 20px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .tarjeta-cuerpo { padding: 24px; }
@@ -210,16 +213,16 @@
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #888;
+            color: #333333;
             margin-bottom: 6px;
-            font-weight: 600;
+            font-weight: 800;
         }
 
         .estadistico-item .est-valor {
             font-family: 'Nimbus Sans', sans-serif;
             font-size: 16px;
             color: var(--verde-primario);
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .r2-barra-fondo {
@@ -243,13 +246,15 @@
             margin: 20px 0 8px 0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 800;
         }
         .seccion-texto h3:first-child { margin-top: 0; }
         .seccion-texto p {
             font-size: 13.5px;
-            color: #555;
+            color: #111111;
             line-height: 1.6;
             margin-bottom: 12px;
+            font-weight: 500;
         }
         .formula-caja {
             background: var(--gris-suave);
@@ -259,22 +264,10 @@
             text-align: center;
             font-family: 'Nimbus Sans', sans-serif;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--verde-primario);
             margin-bottom: 16px;
             letter-spacing: 1px;
-        }
-        .codigo-bloque {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 16px;
-            border-radius: 8px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 12.5px;
-            overflow-x: auto;
-            line-height: 1.45;
-            margin-bottom: 16px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .formulario-grid {
@@ -292,7 +285,7 @@
 
         .campo label {
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--verde-primario);
             text-transform: uppercase;
             letter-spacing: .5px;
@@ -300,7 +293,8 @@
 
         .campo .rango-referencia {
             font-size: 11px;
-            color: var(--verde-claro);
+            color: #2D6A4F;
+            font-weight: 600;
             font-family: 'Nimbus Sans', sans-serif;
         }
 
@@ -312,6 +306,7 @@
             font-family: 'Nimbus Sans', sans-serif;
             background: var(--crema);
             color: var(--gris-texto);
+            font-weight: 600;
             transition: border-color .2s, box-shadow .2s;
         }
 
@@ -321,7 +316,7 @@
             box-shadow: 0 0 0 3px rgba(64,145,108,.15);
         }
 
-        .campo input::placeholder { color: #aaa; font-size: 13px; }
+        .campo input::placeholder { color: #555555; font-size: 13px; font-weight: 400; }
 
         .btn-diagnosticar {
             grid-column: 1 / -1;
@@ -331,7 +326,7 @@
             border: none;
             border-radius: 7px;
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: .5px;
             cursor: pointer;
             transition: background-color .2s, transform .1s;
@@ -358,12 +353,12 @@
             border-left: 8px solid;
         }
 
-        .VERDE    { background: #E8F5E9; border-color: #2E7D32; }
-        .ROJO     { background: #FFEBEE; border-color: #C62828; }
-        .AMARILLO { background: #FFF8E1; border-color: #F9A825; }
-        .NARANJA  { background: #FFF3E0; border-color: #EF6C00; }
-        .AZUL     { background: #E1F5FE; border-color: #0277BD; }
-        .GRIS     { background: #F5F5F5; border-color: #9E9E9E; }
+        .verde    { background: #E8F5E9; border-color: #2E7D32; }
+        .rojo     { background: #FFEBEE; border-color: #C62828; }
+        .amarillo { background: #FFF8E1; border-color: #F9A825; }
+        .naranja  { background: #FFF3E0; border-color: #EF6C00; }
+        .azul     { background: #E1F5FE; border-color: #0277BD; }
+        .gris     { background: #F5F5F5; border-color: #9E9E9E; }
 
         .semaforo-circulo {
             width: 48px;
@@ -378,22 +373,23 @@
             50%      { box-shadow: 0 0 0 10px rgba(0,0,0,0); }
         }
 
-        .VERDE    .semaforo-circulo { background: #2E7D32; }
-        .ROJO     .semaforo-circulo { background: #C62828; }
-        .AMARILLO .semaforo-circulo { background: #F9A825; }
-        .NARANJA  .semaforo-circulo { background: #EF6C00; }
-        .AZUL     .semaforo-circulo { background: #0277BD; }
-        .GRIS     .semaforo-circulo { background: #9E9E9E; }
+        .verde .semaforo-circulo    { background: #2E7D32; }
+        .rojo .semaforo-circulo     { background: #C62828; }
+        .amarillo .semaforo-circulo { background: #F9A825; }
+        .naranja .semaforo-circulo  { background: #EF6C00; }
+        .azul .semaforo-circulo     { background: #0277BD; }
+        .gris .semaforo-circulo     { background: #9E9E9E; }
 
         .semaforo-texto h3 {
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--gris-texto);
         }
 
         .semaforo-fecha {
             font-size: 11px;
-            color: #888;
+            font-weight: 600;
+            color: #333333;
             margin-top: 2px;
             font-family: 'Nimbus Sans', sans-serif;
         }
@@ -413,15 +409,16 @@
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #888;
+            color: #222222;
             margin-bottom: 10px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .lista-tarjeta ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
         .lista-tarjeta ul li {
             font-size: 13px;
-            color: #555;
+            color: #111111;
+            font-weight: 500;
             padding: 10px 12px;
             background: var(--crema);
             border-radius: 6px;
@@ -433,7 +430,7 @@
         .lista-tarjeta ul li::before {
             content: '|';
             color: var(--tierra-claro);
-            font-weight: 700;
+            font-weight: 800;
             flex-shrink: 0;
         }
 
@@ -445,10 +442,10 @@
             font-size: 12px;
             letter-spacing: .5px;
             cursor: pointer;
-            border: 1.5px solid var(--verde-primario);
+            border: 2px solid var(--verde-primario);
             background: transparent;
             color: var(--verde-primario);
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             transition: all .18s;
         }
@@ -461,16 +458,17 @@
             justify-content: space-between;
             align-items: center;
             padding: 9px 0;
-            border-bottom: 1px solid var(--gris-suave);
+            border-bottom: 1px solid var(--gris-borde);
             gap: 8px;
         }
         .rango-fila:last-child { border-bottom: none; }
 
-        .rango-nombre { font-size: 12px; font-weight: 600; color: var(--verde-primario); }
+        .rango-nombre { font-size: 12px; font-weight: 700; color: var(--verde-primario); }
         .rango-valor {
             font-family: 'Nimbus Sans', sans-serif;
-            font-size: 11px;
-            color: var(--verde-claro);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--verde-primario);
             white-space: nowrap;
         }
 
@@ -480,24 +478,26 @@
             align-items: center;
             gap: 10px;
             padding: 8px 0;
-            border-bottom: 1px solid var(--gris-suave);
+            border-bottom: 1px solid var(--gris-borde);
             font-size: 12px;
+            color: #111111;
+            font-weight: 600;
         }
         .historial-item:last-child { border-bottom: none; }
 
         .hist-punto { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-        .hist-VERDE    { background: #2E7D32; }
-        .hist-ROJO     { background: #C62828; }
-        .hist-AMARILLO { background: #F9A825; }
-        .hist-NARANJA  { background: #EF6C00; }
-        .hist-AZUL     { background: #0277BD; }
-        .hist-GRIS     { background: #9E9E9E; }
+        .hist-verde    { background: #2E7D32; }
+        .hist-rojo     { background: #C62828; }
+        .hist-amarillo { background: #F9A825; }
+        .hist-naranja  { background: #EF6C00; }
+        .hist-azul     { background: #0277BD; }
+        .hist-gris     { background: #9E9E9E; }
 
-        .hist-fecha { font-family: 'Nimbus Sans', sans-serif; font-size: 10px; color: #aaa; }
+        .hist-fecha { font-family: 'Nimbus Sans', sans-serif; font-size: 11px; font-weight: 600; color: #444444; }
 
-        .texto-vacio { font-size: 12px; color: #aaa; text-align: center; padding: 16px 0; font-style: italic; }
+        .texto-vacio { font-size: 12px; color: #444444; font-weight: 600; text-align: center; padding: 16px 0; font-style: italic; }
         .separador { border: none; border-top: 1px solid var(--gris-borde); margin: 20px 0; }
-        .aviso-opcional { text-align: center; font-size: 12px; color: #888; margin-bottom: 20px; }
+        .aviso-opcional { text-align: center; font-size: 12px; font-weight: 600; color: #333333; margin-bottom: 20px; }
 
         .footer {
             background-color: var(--verde-primario);
@@ -509,8 +509,8 @@
             gap: 8px;
         }
 
-        .footer-nombre { font-size: 13px; color: rgba(255,255,255,.7); font-weight: 600; }
-        .footer-meta { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing: .5px; text-transform: uppercase; }
+        .footer-nombre { font-size: 13px; color: rgba(255,255,255,.95); font-weight: 700; }
+        .footer-meta { font-size: 10px; color: rgba(255,255,255,.85); font-weight: 600; letter-spacing: .5px; text-transform: uppercase; }
 
         @media print {
             .header-institucional, .banda-proyecto, .tabs-nav, .sidebar-col, .footer { display: none !important; }
@@ -544,7 +544,7 @@
 
     <div class="tabs-nav">
         <button class="tab-btn activo" onclick="abrirPestana(event, 'tab-diagnostico')">1. Diagnostico Operativo</button>
-        <button class="tab-btn" onclick="abrirPestana(event, 'tab-matematicas')">2. Modulo Analitico (Regresion y Graficas)</button>
+        <button class="tab-btn" onclick="abrirPestana(event, 'tab-matematicas')">2. Modulo Analitico</button>
     </div>
 
     <div id="tab-diagnostico" class="tab-contenido activo">
@@ -614,7 +614,7 @@
                             <span class="etiqueta">{{ resultado.fecha }}</span>
                         </div>
                         <div class="tarjeta-cuerpo">
-                            <div class="semaforo-banner {{ resultado.semaforo }}">
+                            <div class="semaforo-banner {{ resultado.semaforo.lower() }}">
                                 <div class="semaforo-circulo"></div>
                                 <div class="semaforo-texto">
                                     <h3>Estado general: {{ resultado.semaforo }}</h3>
@@ -687,38 +687,38 @@
                         <ul class="rangos-lista">
                             <li class="rango-fila">
                                 <span style="display:flex;align-items:center;gap:8px;">
-                                    <span class="hist-punto hist-VERDE"></span>
-                                    <span class="rango-nombre">VERDE</span>
+                                    <span class="hist-punto hist-verde"></span>
+                                    <span class="rango-nombre" style="color:#222;">VERDE</span>
                                 </span>
-                                <span class="rango-valor" style="font-size:11px;color:#666;">Suelo optimo</span>
+                                <span class="rango-valor" style="font-size:11px;color:#222;">Suelo optimo</span>
                             </li>
                             <li class="rango-fila">
                                 <span style="display:flex;align-items:center;gap:8px;">
-                                    <span class="hist-punto hist-AMARILLO"></span>
-                                    <span class="rango-nombre">AMARILLO</span>
+                                    <span class="hist-punto hist-amarillo"></span>
+                                    <span class="rango-nombre" style="color:#222;">AMARILLO</span>
                                 </span>
-                                <span class="rango-valor" style="font-size:11px;color:#666;">Atencion preventiva</span>
+                                <span class="rango-valor" style="font-size:11px;color:#222;">Atencion preventiva</span>
                             </li>
                             <li class="rango-fila">
                                 <span style="display:flex;align-items:center;gap:8px;">
-                                    <span class="hist-punto hist-NARANJA"></span>
-                                    <span class="rango-nombre">NARANJA</span>
+                                    <span class="hist-punto hist-naranja"></span>
+                                    <span class="rango-nombre" style="color:#222;">NARANJA</span>
                                 </span>
-                                <span class="rango-valor" style="font-size:11px;color:#666;">Deficit de nutrientes</span>
+                                <span class="rango-valor" style="font-size:11px;color:#222;">Deficit de nutrientes</span>
                             </li>
                             <li class="rango-fila">
                                 <span style="display:flex;align-items:center;gap:8px;">
-                                    <span class="hist-punto hist-AZUL"></span>
-                                    <span class="rango-nombre">AZUL</span>
+                                    <span class="hist-punto hist-azul"></span>
+                                    <span class="rango-nombre" style="color:#222;">AZUL</span>
                                 </span>
-                                <span class="rango-valor" style="font-size:11px;color:#666;">Exceso de agua</span>
+                                <span class="rango-valor" style="font-size:11px;color:#222;">Exceso de agua</span>
                             </li>
                             <li class="rango-fila">
                                 <span style="display:flex;align-items:center;gap:8px;">
-                                    <span class="hist-punto hist-ROJO"></span>
-                                    <span class="rango-nombre">ROJO</span>
+                                    <span class="hist-punto hist-rojo"></span>
+                                    <span class="rango-nombre" style="color:#222;">ROJO</span>
                                 </span>
-                                <span class="rango-valor" style="font-size:11px;color:#666;">Intervencion urgente</span>
+                                <span class="rango-valor" style="font-size:11px;color:#222;">Intervencion urgente</span>
                             </li>
                         </ul>
                     </div>
@@ -731,37 +731,41 @@
         
         <div class="tarjeta">
             <div class="tarjeta-cabecera">
-                <h2>Visualizacion Analitica: Evolucion de Modelos</h2>
+                <h2>Visualizacion Analitica: pH vs Modelo Lineal</h2>
                 <span class="etiqueta">Chart.js</span>
             </div>
             <div class="tarjeta-cuerpo">
-                <p style="font-size: 13px; color: #666; margin-bottom: 16px; line-height: 1.6;">
-                    Grafico comparativo del comportamiento real de la humedad vs. el pronostico del modelo lineal (minimos cuadrados) y el avance hacia un modelo polinomial cubico ajustado.
+                <p style="font-size: 13.5px; color: #111111; margin-bottom: 16px; line-height: 1.6; font-weight: 500;">
+                    Grafico comparativo del comportamiento real del pH del suelo frente al pronostico del modelo lineal de minimos cuadrados. Se incluye la proyeccion para la proxima semana.
                 </p>
                 <div class="grafica-contenedor">
-                    <canvas id="graficaHumedad"></canvas>
+                    <canvas id="graficaPH"></canvas>
                 </div>
             </div>
         </div>
 
         <div class="tarjeta">
             <div class="tarjeta-cabecera">
-                <h2>Metricas de Prediccion</h2>
+                <h2>Metricas de Prediccion y Error</h2>
                 <span class="etiqueta">Periodo Actual</span>
             </div>
             <div class="tarjeta-cuerpo">
                 {% if prediccion %}
                 <div class="estadisticos-grid">
                     <div class="estadistico-item">
-                        <div class="est-label">Pronostico Lineal (y)</div>
-                        <div class="est-valor">{{ prediccion.prediccion }} %</div>
-                    </div>
-                    <div class="estadistico-item" style="border-color: var(--verde-claro);">
-                        <div class="est-label" style="color: var(--verde-claro);">Pronostico Cubico (f(t))</div>
-                        <div class="est-valor" style="color: var(--verde-claro);">{{ prediccion.prediccion_c }} %</div>
+                        <div class="est-label">Pronostico a 1 Dia</div>
+                        <div class="est-valor">{{ prediccion.prediccion_1 }}</div>
                     </div>
                     <div class="estadistico-item">
-                        <div class="est-label">R2 - Modelo Lineal</div>
+                        <div class="est-label">Pronostico a 1 Semana</div>
+                        <div class="est-valor">{{ prediccion.prediccion_7 }}</div>
+                    </div>
+                    <div class="estadistico-item" style="border-color: var(--tierra-claro);">
+                        <div class="est-label" style="color: #A0643A;">Margen de Error (MAE)</div>
+                        <div class="est-valor" style="color: var(--tierra-claro);">± {{ prediccion.margen_error }}</div>
+                    </div>
+                    <div class="estadistico-item">
+                        <div class="est-label">Precision (R2)</div>
                         <div class="est-valor">{{ prediccion.r2 }}</div>
                         <div class="r2-barra-fondo">
                             <div class="r2-barra-relleno" style="width: {{ (prediccion.r2 * 100)|int }}%"></div>
@@ -778,37 +782,12 @@
                 <span class="etiqueta" style="background: var(--crema); color: var(--verde-primario);">Metodologia</span>
             </div>
             <div class="tarjeta-cuerpo seccion-texto">
-                <h3>Modelo de Regresion Lineal</h3>
-                <p>El comportamiento base se estructura a traves de la ecuacion de la recta (y = mx + b) mediante minimos cuadrados. Al procesar los datos de la parcela se obtiene la siguiente formula de tendencia:</p>
+                <h3>Modelo de Regresion Lineal (pH)</h3>
+                <p>El comportamiento base se estructura a traves de la ecuacion de la recta mediante minimos cuadrados. Al procesar los datos historicos de acidez y alcalinidad de la parcela, se obtiene la siguiente formula de tendencia:</p>
                 <div class="formula-caja" style="color: var(--verde-primario); border-color: var(--verde-primario);">
                     {% if prediccion %} {{ prediccion.ecuacion }} {% endif %}
                 </div>
-                
-                <h3>Evolucion: Modelo Polinomial (Grado 3)</h3>
-                <p>Para mejorar la proyeccion lineal, se desarrollo una ecuacion cubica basada en el analisis edafologico historico de la region del Soconusco. Este modelo capta con mayor exactitud las fluctuaciones curvas propias de las temporadas de sequia y lluvia:</p>
-                <div class="formula-caja" style="color: var(--verde-claro); border-color: var(--verde-claro);">
-                    f(t) = 31.02 - 0.19t + 0.006t2 - 0.00004t3
-                </div>
-                <p>Ambos modelos han sido programados de forma nativa en el backend de Python, demostrando el transito de un analisis estatico a un sistema predictivo capaz de anticipar estres hidrico o asfixia radicular en los proximos periodos de cultivo.</p>
-
-                <h3>Implementacion (Python)</h3>
-                <p>El algoritmo predictivo se desarrollo desde cero, aplicando directamente las formulas algebraicas sobre las listas de datos sin depender de librerias externas de machine learning. A continuacion, se ilustran las lineas de codigo responsables del ajuste del modelo Lineal:</p>
-                <pre class="codigo-bloque"><code># 1. Ajuste del modelo: Calculo de medias, pendiente (m) e intercepto (b)
-mean_x = sum(x) / len(x)
-mean_y = sum(y) / len(y)
-
-numerador = sum((x[i] - mean_x) * (y[i] - mean_y) for i in range(len(x)))
-denominador = sum((x[i] - mean_x) ** 2 for i in range(len(x)))
-
-slope = numerador / denominador
-intercept = mean_y - (slope * mean_x)
-
-# 2. Extraccion de metricas: Calculo del Coeficiente de Determinacion (R2)
-y_predicted = [slope * val_x + intercept for val_x in x]
-ss_res = sum([(y_actual - y_pred)**2 for y_actual, y_pred in zip(y, y_predicted)])
-ss_tot = sum([(y_actual - mean_y)**2 for y_actual in y])
-
-r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0</code></pre>
+                <p>El Margen de Error se calculo utilizando el Error Absoluto Medio (MAE), garantizando una metrica de desviacion facil de interpretar para las decisiones de aplicacion de enmiendas calcareas.</p>
             </div>
         </div>
     </div>
@@ -817,7 +796,7 @@ r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0</code></pre>
 
 <footer class="footer">
     <span class="footer-nombre">TerraData - El Cacao en el Soconusco | Equipo 2</span>
-    <span class="footer-meta">Desarrollado por: Galvan Morales Mirian Jazmin - Gutierrez Ojeda Angel Gabriel- Angulo Pimentel Felipe Francisco - González Villanueva Leticia</span>
+    <span class="footer-meta">Desarrollado por: Galvan Morales Mirian Jazmin - Gutierrez Ojeda Angel Gabriel</span>
 </footer>
 
 <script>
@@ -860,7 +839,7 @@ r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0</code></pre>
             var li = document.createElement('li');
             li.className = 'historial-item';
             li.innerHTML =
-                '<span class="hist-punto hist-' + h.semaforo + '"></span>' +
+                '<span class="hist-punto hist-' + h.semaforo.toLowerCase() + '"></span>' +
                 '<span>' +
                     '<strong>' + h.semaforo + '</strong><br>' +
                     '<span class="hist-fecha">' + h.fecha + '</span>' +
@@ -893,11 +872,10 @@ r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0</code></pre>
 
     {% if prediccion %}
     document.addEventListener("DOMContentLoaded", function() {
-        var ctx = document.getElementById('graficaHumedad').getContext('2d');
+        var ctx = document.getElementById('graficaPH').getContext('2d');
         var labels_x = {{ prediccion.labels_chart | tojson }};
         var data_real = {{ prediccion.real_chart | tojson }};
         var data_lineal = {{ prediccion.lineal_chart | tojson }};
-        var data_cubica = {{ prediccion.cubica_chart | tojson }};
 
         new Chart(ctx, {
             type: 'line',
@@ -905,33 +883,24 @@ r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0</code></pre>
                 labels: labels_x,
                 datasets: [
                     {
-                        label: 'Humedad Real (%)',
+                        label: 'pH Real Registrado',
                         data: data_real,
                         borderColor: '#8B5E3C',
                         backgroundColor: '#8B5E3C',
                         borderWidth: 2,
                         pointRadius: 4,
-                        borderDash: [5, 5],
                         fill: false,
                         tension: 0.1
                     },
                     {
-                        label: 'Tendencia Lineal',
+                        label: 'Tendencia Lineal (Pronostico)',
                         data: data_lineal,
                         borderColor: '#2D6A4F',
                         borderWidth: 2,
                         pointRadius: 0,
+                        borderDash: [5, 5],
                         fill: false,
                         tension: 0
-                    },
-                    {
-                        label: 'Modelo Cubico (Optimo)',
-                        data: data_cubica,
-                        borderColor: '#40916C',
-                        borderWidth: 3,
-                        pointRadius: 0,
-                        fill: false,
-                        tension: 0.4
                     }
                 ]
             },
@@ -941,7 +910,7 @@ r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0</code></pre>
                 plugins: {
                     legend: {
                         position: 'bottom',
-                        labels: { font: { family: "'Nimbus Sans', sans-serif" } }
+                        labels: { font: { family: "'Nimbus Sans', sans-serif", color: '#1A1A1A', weight: 'bold' } }
                     },
                     tooltip: {
                         mode: 'index',
@@ -949,8 +918,14 @@ r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0</code></pre>
                     }
                 },
                 scales: {
-                    x: { title: { display: true, text: 'Periodo (Tiempo)' } },
-                    y: { title: { display: true, text: 'Nivel de Humedad (%)' } }
+                    x: { 
+                        title: { display: true, text: 'Dias de Medicion', color: '#1A1A1A', font: { weight: 'bold' } },
+                        ticks: { color: '#333333', font: { weight: 'bold' } }
+                    },
+                    y: { 
+                        title: { display: true, text: 'Nivel de pH', color: '#1A1A1A', font: { weight: 'bold' } },
+                        ticks: { color: '#333333', font: { weight: 'bold' } }
+                    }
                 }
             }
         });

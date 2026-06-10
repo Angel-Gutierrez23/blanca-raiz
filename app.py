@@ -4,26 +4,24 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Modulo predictivo
+# Modulo predictivo enfocado en pH
 def calcular_regresion_historica():
     try:
         ruta_csv = 'dataset_suelo_NASA_soconusco_2015_2024.xlsx - Dataset Completo.csv'
         df = pd.read_csv(ruta_csv)
-        
         df['Fecha'] = pd.to_datetime(df['Fecha'])
-        df['Anio'] = df['Fecha'].dt.year
         
-        datos_anuales = df.groupby('Anio')['Humedad'].mean().reset_index()
-        y = datos_anuales['Humedad'].tolist()
+        # Para proyecciones diarias, ordenamos y tomamos los ultimos 30 dias registrados
+        df = df.sort_values('Fecha')
+        datos_recientes = df.tail(30)
+        
+        y = datos_recientes['pH_Suelo'].tolist()
         
     except Exception as e:
-        print(f"Alerta: No se pudo leer el CSV. Usando datos de respaldo. Error: {e}")
-        y = [
-            36.08, 39.02, 35.28, 31.69, 25.55, 45.55, 26.73, 30.25,
-            40.58, 31.18, 27.71, 45.59, 36.04, 36.61, 41.03, 22.71,
-            43.67, 33.27, 42.75, 47.52, 37.63, 42.97, 34.45, 25.72,
-            27.38, 36.18, 47.37, 24.24
-        ]
+        print(f"Alerta CSV: {e}. Usando respaldo de pH.")
+        # Datos sinteticos de respaldo si falla el CSV
+        y = [6.2, 6.25, 6.22, 6.3, 6.31, 6.35, 6.4, 6.38, 6.42, 6.45, 
+             6.48, 6.5, 6.52, 6.55, 6.51, 6.58, 6.6, 6.62, 6.65, 6.68]
 
     x = list(range(1, len(y) + 1))
     mean_x = sum(x) / len(x) if len(x) > 0 else 0
@@ -35,37 +33,40 @@ def calcular_regresion_historica():
     pendiente = numerador / denominador if denominador != 0 else 0
     intercepto = mean_y - (pendiente * mean_x)
 
-    siguiente_x = len(x) + 1
-    prediccion_lineal = pendiente * siguiente_x + intercepto
+    ultimo_x = len(x)
+    
+    # Proyecciones especificas solicitadas
+    prediccion_1_dia = pendiente * (ultimo_x + 1) + intercepto
+    prediccion_7_dias = pendiente * (ultimo_x + 7) + intercepto
 
-    ss_res = sum((y[i] - (pendiente * x[i] + intercepto)) ** 2 for i in range(len(x)))
-    ss_tot = sum((y[i] - mean_y) ** 2 for i in range(len(x)))
+    # Calculo de metricas: R2 y Margen de Error Absoluto (MAE)
+    ss_res = 0
+    ss_tot = 0
+    error_absoluto_total = 0
+
+    for i in range(len(x)):
+        y_pred = pendiente * x[i] + intercepto
+        ss_res += (y[i] - y_pred) ** 2
+        ss_tot += (y[i] - mean_y) ** 2
+        error_absoluto_total += abs(y[i] - y_pred)
 
     r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0
+    margen_error = error_absoluto_total / len(x) if len(x) > 0 else 0
 
-    c0 = 3000941 / 96744
-    c1 = -145105 / 768037
-    c2 = 3473 / 550139
-    c3 = -31 / 713628
-
-    prediccion_cubica = c0 + (c1 * siguiente_x) + (c2 * (siguiente_x**2)) + (c3 * (siguiente_x**3))
-
-    x_chart = list(range(1, len(y) + 2))
-    y_real_chart = y + [None]
-    y_lineal_chart = [round(pendiente * val + intercepto, 2) for val in x_chart]
-    y_cubica_chart = [round(c0 + (c1*val) + (c2*(val**2)) + (c3*(val**3)), 2) for val in x_chart]
+    # Preparacion de datos para Chart.js (historico + 7 dias futuros)
+    x_chart = list(range(1, len(y) + 8)) 
+    y_real_chart = y + [None] * 7
+    y_lineal_chart_completo = [round(pendiente * val + intercepto, 2) for val in x_chart]
 
     return {
         "ecuacion": f"y = {round(pendiente, 4)}x + {round(intercepto, 4)}",
-        "prediccion": round(prediccion_lineal, 2),
-        "prediccion_c": round(prediccion_cubica, 2),
+        "prediccion_1": round(prediccion_1_dia, 2),
+        "prediccion_7": round(prediccion_7_dias, 2),
+        "margen_error": round(margen_error, 4),
         "r2": round(r2, 4),
-        "n_datos": len(x),
-        "media_y": round(mean_y, 2),
         "labels_chart": x_chart,
         "real_chart": y_real_chart,
-        "lineal_chart": y_lineal_chart,
-        "cubica_chart": y_cubica_chart
+        "lineal_chart": y_lineal_chart_completo
     }
 
 # Modulo de diagnostico
